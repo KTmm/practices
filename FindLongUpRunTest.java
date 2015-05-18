@@ -19,20 +19,29 @@ public class FindLongUpRunTest {
     int[] prices6 = new int[]{3,1,2,5,8,2,3,4,9,10,13,2,3,4,7};
     int[] prices7 = new int[]{0,1,2,3,4,5,1,2,3,1,5,6,7,8,9,9,9,9,9,9};
     
-    @Before
-    public void setUpStreams() {
-        System.setOut(new PrintStream(outContent));
+   
+    
+    @Test
+    public void test1(){
+    	StockPrices sp1 = new StockPrices(prices1);
+    	sp1.findLongestUpRun();
+    	assertEquals(0, sp1.getLongestUpRun());
+    	assertEquals(0, sp1.getPriceGain(), 0.001);
     }
     
     @Test
-    public void test(){
-    	FindLongestRunup.findLongestUpRun(prices1);
-    	assertEquals("Longest Up-Run period is 0 days, and the percentage of gain is 0.0%", outContent.toString());
+    public void test2(){
+    	StockPrices sp2 = new StockPrices(prices2);
+    	sp2.findLongestUpRun();
+    	assertEquals(1, sp2.getLongestUpRun());
+    	assertEquals(0, sp2.getPriceGain(), 0.001);
     }
     
-    @After
-    public void cleanUpStreams() {
-        System.setOut(null);
+    @Test
+    public void test3(){
+    	StockPrices sp3 = new StockPrices(prices3);
+    	sp3.findLongestUpRun();
+    	assertEquals(2, sp3.getLongestUpRun());
     }
 
 	
