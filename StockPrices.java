@@ -7,7 +7,8 @@ public class StockPrices {
 	public StockPrices(int[] prices){
 		pricesOfAPeriod = prices;
 	}
-		
+	
+	/**@return the longest up-run period in an int array*/	
 	public int findLongestUpRunPeriod(){
 		int start = 0;
 		int end = 0;
