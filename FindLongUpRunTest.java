@@ -49,5 +49,24 @@ public class FindLongUpRunTest {
     	assertEquals(2.00, sp4.getPriceGain(), 0.001);
     }
 	
-
+    @Test
+    public void test5(){
+    	StockPrices sp5 = new StockPrices(prices5);
+    	assertEquals(5, sp5.findLongestUpRunPeriod());
+    	assertEquals(4.00, sp5.getPriceGain(), 0.001);
+    }
+    
+    @Test
+    public void test6(){
+    	StockPrices sp6 = new StockPrices(prices6);
+    	assertEquals(6, sp6.findLongestUpRunPeriod());
+    	assertEquals(5.5, sp6.getPriceGain(), 0.001);
+    }
+    
+    @Test
+    public void test7(){
+    	StockPrices sp7 = new StockPrices(prices7);
+    	assertEquals(11, sp7.findLongestUpRunPeriod());
+    	assertEquals(8.00, sp7.getPriceGain(), 0.001);
+    }
 }
