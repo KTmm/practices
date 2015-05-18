@@ -18,6 +18,7 @@ public class StockPrices {
 			longestPeriod = pricesOfAPeriod.length;
 			priceGain = 0.0;
 		}
+		
 		while (start < pricesOfAPeriod.length - 1 && end < pricesOfAPeriod.length - 1){
 			end = findContinousUp(start, pricesOfAPeriod);
 			int period = end - start + 1;

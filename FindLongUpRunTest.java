@@ -15,8 +15,8 @@ public class FindLongUpRunTest {
 	int[] prices3 = new int[]{1,1};
     int[] prices4 = new int[]{1,2,3};
     int[] prices5 = new int[]{1,1,2,4,5,2,3};
-    int[] prices6 = new int[]{3,1,2,5,8,2,3,4,9,10,13,2,3,4,7};
     int[] prices7 = new int[]{0,1,2,3,4,5,1,2,3,1,5,6,7,8,9,9,9,9,9,9};
+    int[] prices8 = new int[]{0,1,2,3,4,5,1,2,3,0,5,6,7,8,9,9,9,9,9,9};
     
     @Test
     public void longestPeriod_isCorrect_forEmptyArray(){
@@ -55,6 +55,7 @@ public class FindLongUpRunTest {
     
     @Test
     public void longestPeriod_isCorrect_forMoreThanOneUpRun_2(){
+        int[] prices6 = new int[]{3,1,2,5,8,2,3,4,9,10,13,2,3,4,7};
     	StockPrices sp6 = new StockPrices(prices6);
     	assertEquals(6, sp6.findLongestUpRunPeriod());
     	assertEquals(5.5, sp6.getPriceGain(), 0.001);
@@ -65,5 +66,12 @@ public class FindLongUpRunTest {
     	StockPrices sp7 = new StockPrices(prices7);
     	assertEquals(11, sp7.findLongestUpRunPeriod());
     	assertEquals(8.00, sp7.getPriceGain(), 0.001);
+    }
+    
+    @Test
+    public void gainPercent_isZero(){
+    	StockPrices sp8 = new StockPrices(prices8);
+    	sp8.findLongestUpRunPeriod();
+    	assertTrue( Double.isInfinite( sp8.getPriceGain() ) );
     }
 }
