@@ -7,8 +7,9 @@ public class RunReport {
 	 * @throws noStudentNameException 
 	 * @throws studentRepeatException 
 	 * @throws noGradesException 
+	 * @throws noStudentsSpecifiedException 
 	 */
-	public static void main(String[] args) throws noStudentNameException, invalidGradeException, studentRepeatException, noGradesException {
+	public static void main(String[] args) throws noStudentNameException, invalidGradeException, studentRepeatException, noGradesException, noStudentsSpecifiedException {
 		{
 			Student JON = new Student("JON : 19 14 15 15 16");
 			Student JEREMY = new Student("JEREMY : 15  11   10   15   16");
