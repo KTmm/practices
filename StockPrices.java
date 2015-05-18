@@ -8,7 +8,7 @@ public class StockPrices {
 		pricesOfAPeriod = prices;
 	}
 		
-	public void findLongestUpRun(){
+	public int findLongestUpRunPeriod(){
 		int start = 0;
 		int end = 0;
 		longestPeriod = 0;
@@ -23,7 +23,7 @@ public class StockPrices {
 			updateLongestPeriod(period, start, end);
 			start = end + 1;
 		}
-		//System.out.println("Longest Up-Run period is " + longestPeriod + " days, and the percentage of gain is " + priceGain * 100 + "%");
+		return longestPeriod;
 	}
 	
 	/**This method finds the last element of a up-run sequence in an array for a given start index
@@ -40,10 +40,6 @@ public class StockPrices {
 			longestPeriod = period;
 			priceGain = (pricesOfAPeriod[end] - pricesOfAPeriod[start])/(double)pricesOfAPeriod[start]; 
 		}
-	}
-	
-	public int getLongestUpRun(){
-		return longestPeriod;
 	}
 	
 	public double getPriceGain(){
