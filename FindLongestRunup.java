@@ -39,7 +39,7 @@ public class FindLongestRunup {
 			}
 			start = end + 1;
 		}
-		System.out.println("Longest Up-Run period is " + longestPeriod + " days, and the pertage of gain is " + gain * 100 + "%");
+		System.out.println("Longest Up-Run period is " + longestPeriod + " days, and the percentage of gain is " + gain * 100 + "%");
 	}
 	
 	/**This method finds the last element of a up-run sequence in an array for a given start index

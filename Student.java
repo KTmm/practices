@@ -28,7 +28,6 @@ public class Student {
 	public Student (String studentRecord) throws noStudentNameException, invalidGradeException, noGradesException{
 		StudentName = extarctStudentName(studentRecord);
 		String[] parsedGrades = extraStudentGrades(studentRecord);
-		System.out.println(parsedGrades.length);
 		StudentGrades = new int[parsedGrades.length];
 		for (int i = 0; i < parsedGrades.length; i++){
 			int grade = Integer.parseInt(parsedGrades[i]); 
@@ -80,8 +79,7 @@ public class Student {
 	
 	/**This method extracts the student grades from a string of student record with both student name and grades,
 	 * student grades are separated by one or more spaces in the record
-	 * @return a string array of the parsed stduent's grades
-	 * @throws noGradesException */
+	 * @return a string array of the parsed stduent's grades */
 	private String[] extraStudentGrades(String record) throws noGradesException{
 		String grades = record.substring(record.indexOf(':') + 1);
 		if (grades.trim().equals("")){
