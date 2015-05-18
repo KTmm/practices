@@ -28,7 +28,6 @@ public class Student {
 	public Student (String studentRecord) throws noStudentNameException, invalidGradeException, noGradesException{
 		StudentName = extarctStudentName(studentRecord);
 		String[] parsedGrades = extraStudentGrades(studentRecord);
-		System.out.println(parsedGrades.length);
 		StudentGrades = new int[parsedGrades.length];
 		for (int i = 0; i < parsedGrades.length; i++){
 			int grade = Integer.parseInt(parsedGrades[i]); 
