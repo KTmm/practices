@@ -60,4 +60,16 @@ public class StudentScoreTest  {
 		class2.addStudent(JEREMY);
 	}
 	
+	public void test6() throws noStudentNameException, invalidGradeException, studentRepeatException, noGradesException{
+		Student JON = new Student("JON : 19  14  15  15 16");
+		Student JEREMY = new Student("JEREMY : 19  14  15  15 16");
+		FinalGrades class3 = new FinalGrades();
+		class3.addStudent(JON);
+		class3.addStudent(JEREMY);
+		class3.removeStudent(JON);
+		assertEquals(15.80, class1.getClassMean(), 0.005);
+	}
+	
+	
+	
 }
