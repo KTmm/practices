@@ -44,7 +44,17 @@ public class TextProcessor {
 	public void findWordInWhichSentence(String text){
 		wordApperanceInSentence = new TreeMap<String, ArrayList<Integer>>();
 		ArrayList<String[]> wordsInTheText = parseText(text);
-		
+		for (int i = 0; i < wordsInTheText.size(); i++){
+			String[] wordsInASentence = wordsInTheText.get(i);
+			for (String word : wordsInASentence){
+				ArrayList<Integer> sentenceCount = new ArrayList<Integer>();
+				if (!wordApperanceInSentence.containsKey(word)) {
+					wordApperanceInSentence.put(word, sentenceCount);
+				}
+				sentenceCount.add(i);
+				wordApperanceInSentence.put(word, sentenceCount);
+			}
+		}
 		
 	}
 		
