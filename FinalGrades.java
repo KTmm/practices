@@ -32,19 +32,31 @@ public class FinalGrades {
 		sumMean -= student.getMean();
 	}
 	
-	/**@return the mean grades of all students*/
-	public double getClassMean(){
+	/**@return the mean grades of all students
+	 * @throws noStudentsSpecifiedException */
+	public double getClassMean() throws noStudentsSpecifiedException{
+		if( classGrades.size() == 0 ) {
+			throw new noStudentsSpecifiedException();
+		}
+		
 		return sumMean/ classGrades.size();
 	}
 	
 	/**This method prints summary of each student's average grade and the class'es average grade
+	 * @throws noStudentsSpecifiedException 
 	 * @see summary prints in the console */
-	public void printReport(){
+	public void printReport() throws noStudentsSpecifiedException{
+		System.out.println( getMessage() );
+	}
+	
+	protected String getMessage() throws noStudentsSpecifiedException {
+		String message = "";
 		DecimalFormat df = new DecimalFormat("#.00");
 		for (String name : classGrades.keySet()){
-			System.out.println(name + " "  + df.format(classGrades.get(name)) + '\n');
+			message += name + " "  + df.format(classGrades.get(name)) + '\n';
 		}
-		System.out.println("OVERALL " + df.format(getClassMean()));
+		message += "OVERALL " + df.format(getClassMean());
+		return message;
 	}
 	
 }
