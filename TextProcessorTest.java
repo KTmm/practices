@@ -1,12 +1,14 @@
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 
 public class TextProcessorTest {
 
 	@Test
-	public void isCorrect_forTextParser() {
+	public void isCorrect_forTextParser() throws textNotParsedException {
 		TextProcessor tp1 = new TextProcessor("Sentence 1. Sentence 2 ! Sentence 3 ? Sentence 4");
 		tp1.parseTextIntoWords();
 		assertEquals(4, tp1.getParsedText().size());
@@ -37,9 +39,28 @@ public class TextProcessorTest {
 	
 	@Test(expected = wordNotExistException.class)
 	public void wrodCountThrowsWordNotExistException() throws textNotParsedException, wordCountHasNotBeenConductedYetException, wordNotExistException{
-		TextProcessor tp3 = new TextProcessor("Sentence 1. sentence 2 ! sentence 3 ? Sentence 4");
-		tp3.parseTextIntoWords();
-		tp3.countWordFrequencyAndPositions();
-		assertEquals(2, tp3.getWordCount("word"));
+		TextProcessor tp5 = new TextProcessor("Sentence 1. sentence 2 ! sentence 3 ? Sentence 4");
+		tp5.parseTextIntoWords();
+		tp5.countWordFrequencyAndPositions();
+		assertEquals(2, tp5.getWordCount("word"));
 	}
+	
+	@Test
+	public void isCorrect_forWordPositions() throws textNotParsedException, wordCountHasNotBeenConductedYetException, wordNotExistException{
+		TextProcessor tp6 = new TextProcessor("Sentence 1. sentence 2 ! sentence 3 ? Sentence 4");
+		tp6.parseTextIntoWords();
+		tp6.countWordFrequencyAndPositions();
+		String position = changePositionToString(tp6.getWordPositions("Sentence"));
+		assertEquals("1, 4, ", position);
+	}
+	
+	public static String changePositionToString(ArrayList<Integer> postion ){
+		String s = "";
+		for (Integer i :postion){
+			s += String.valueOf(i);
+			s += ", ";
+		}
+		return s;
+	}
+	
 }

@@ -16,17 +16,17 @@ public class TextProcessor {
 	/***/
 	public void parseTextIntoWords(){
 		parsedWordsInText = new ArrayList<String[]>();
+		
 		String[] parsedSentences = rawText.split("[?.!]");
 		for (String s : parsedSentences){
+			s.replaceAll("[:;()[]\"/,\\]", " ");
 			String[] words = s.split("\\s+");
 			for (String w : words){
 			}
 			parsedWordsInText.add(words);
 		}
-		
 	}
 			
-	
 	/**This method traverses the parsed text list and updates the word counts and word position
 	 * @throws textNotParsedException */
 	public void countWordFrequencyAndPositions() throws textNotParsedException{
@@ -46,7 +46,7 @@ public class TextProcessor {
 				wordCount.put(word, ++count);
 				System.out.println(word + " count = "+ count);
 				wordPositions = wordApperanceInSentence.get(word);
-				wordPositions.add(i);
+				wordPositions.add(i + 1);
 				wordApperanceInSentence.put(word, wordPositions);
 			}
 		}
@@ -62,7 +62,8 @@ public class TextProcessor {
 		return rawText;
 	}
 	
-	public ArrayList<String[]> getParsedText(){
+	public ArrayList<String[]> getParsedText() throws textNotParsedException{
+		validateTextIsParsed();
 		return parsedWordsInText;
 	}
 	
@@ -76,5 +77,14 @@ public class TextProcessor {
 		return wordCount.get(word);
 	}
 	
+	public ArrayList<Integer> getWordPositions(String word) throws wordCountHasNotBeenConductedYetException, wordNotExistException{
+		if (wordApperanceInSentence == null){
+			throw new wordCountHasNotBeenConductedYetException("word count has not been conducted!");
+		}
+		if (!wordApperanceInSentence.containsKey(word)){
+			throw new wordNotExistException("This word does not exist in the text!");
+		}
+		return wordApperanceInSentence.get(word);
+	}
 	
 }
