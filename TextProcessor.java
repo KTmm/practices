@@ -3,47 +3,55 @@ import java.util.TreeMap;
 
 
 public class TextProcessor {
-	private String textToBeProcessed;
+	private String rawText;
+	private ArrayList<String[]> parsedWordsInText;
 	private TreeMap<String, Integer> wordCount;
 	private TreeMap<String, ArrayList<Integer>> wordApperanceInSentence;
 	
+	
 	public TextProcessor(String input){
-		textToBeProcessed = input;
+		rawText = input;
 	}
 	
-	/**Define: A sentence is separated by one of the following punctuation: ". ? ! "*/
-	public ArrayList<String[]> parseText(String text){
-		ArrayList<String[]> parsedWordsInText = new ArrayList<String[]>();
-		String[] parsedSentences = text.split("[?.!]");
+	/***/
+	public void parseTextIntoWords(){
+		parsedWordsInText = new ArrayList<String[]>();
+		String[] parsedSentences = rawText.split("[?.!]");
 		for (String s : parsedSentences){
 			String[] words = s.split("\\s+");
+			for (String w : words){
+			}
 			parsedWordsInText.add(words);
 		}
-		return parsedWordsInText;
+		
 	}
 			
-	public String[] splictSentenceIntoWords(String sentence){
-		String[] parsedWords = sentence.trim().split("\\s+");
-		return parsedWords;
-	}
 	
-	public void countWordsInText(String text){
+	
+	public void countWordFrequencyAndPositions(String text){
 		wordCount = new TreeMap<String, Integer>(); 
-		ArrayList<String[]> wordsInTheText = parseText(text);
-		for (String[] sentence : wordsInTheText){
-			for (String w : sentence){
-				if (!(wordCount.containsKey(w))){
-					wordCount.put(w, 0);
+		wordApperanceInSentence = new TreeMap<String, ArrayList<Integer>>();
+		
+		for (int i = 0; i < parsedWordsInText.size(); i++){
+			String[] wordsInASentence = parsedWordsInText.get(i);
+			for (String word : wordsInASentence){
+				ArrayList<Integer> wordPositions = new ArrayList<Integer>();
+				if (!(wordCount.containsKey(word))){
+					wordCount.put(word, 0);
+					wordApperanceInSentence.put(word, wordPositions);
 				}
-				int count = wordCount.get(w);
-				wordCount.put(w, ++count);
+				int count = wordCount.get(word);
+				wordCount.put(word, ++count);
+				wordPositions = wordApperanceInSentence.get(word);
+				wordPositions.add(i);
+				wordApperanceInSentence.put(word, wordPositions);
 			}
 		}
 	}
 	
 	public void findWordInWhichSentence(String text){
-		wordApperanceInSentence = new TreeMap<String, ArrayList<Integer>>();
-		ArrayList<String[]> wordsInTheText = parseText(text);
+		
+		ArrayList<String[]> wordsInTheText = parseTextIntoWords(text);
 		for (int i = 0; i < wordsInTheText.size(); i++){
 			String[] wordsInASentence = wordsInTheText.get(i);
 			for (String word : wordsInASentence){
@@ -59,10 +67,14 @@ public class TextProcessor {
 	}
 		
 	public String getText(){
-		return textToBeProcessed;
+		return rawText;
 	}
 	
 	public int getWordCount(String word){
 		return wordCount.get(word);
+	}
+	
+	public ArrayList<String[]> getParsedText(){
+		return parsedWordsInText;
 	}
 }
