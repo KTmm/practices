@@ -1,7 +1,5 @@
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-
 import org.junit.Test;
 
 
@@ -21,4 +19,27 @@ public class TextProcessorTest {
 		tp2.countWordFrequencyAndPositions();
 	}
 	
+	@Test
+	public void isCorrect_forWordCounts() throws textNotParsedException, wordCountHasNotBeenConductedYetException, wordNotExistException{
+		TextProcessor tp3 = new TextProcessor("Sentence 1. sentence 2 ! sentence 3 ? Sentence 4");
+		tp3.parseTextIntoWords();
+		tp3.countWordFrequencyAndPositions();
+		assertEquals(2, tp3.getWordCount("Sentence"));
+		assertEquals(1, tp3.getWordCount("1"));
+	}
+	
+	@Test(expected = wordCountHasNotBeenConductedYetException.class)
+	public void wordCountThrowsWordCountHasNotBeenConductedException() throws wordCountHasNotBeenConductedYetException, wordNotExistException{
+		TextProcessor tp4 = new TextProcessor("Sentence 1. sentence 2 ! sentence 3 ? Sentence 4");
+		tp4.parseTextIntoWords();
+		tp4.getWordCount("Sentence");
+	}
+	
+	@Test(expected = wordNotExistException.class)
+	public void wrodCountThrowsWordNotExistException() throws textNotParsedException, wordCountHasNotBeenConductedYetException, wordNotExistException{
+		TextProcessor tp3 = new TextProcessor("Sentence 1. sentence 2 ! sentence 3 ? Sentence 4");
+		tp3.parseTextIntoWords();
+		tp3.countWordFrequencyAndPositions();
+		assertEquals(2, tp3.getWordCount("word"));
+	}
 }
