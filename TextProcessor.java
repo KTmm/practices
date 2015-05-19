@@ -5,7 +5,7 @@ import java.util.TreeMap;
 public class TextProcessor {
 	private String textToBeProcessed;
 	private TreeMap<String, Integer> wordCount;
-	private TreeMap<String, ArrayList<Integer>> wordApperanceInSentence;
+	private TreeMap<String, ArrayList<Integer>> wordAppearInSentence;
 	
 	public TextProcessor(String input){
 		textToBeProcessed = input;
@@ -16,6 +16,7 @@ public class TextProcessor {
 		ArrayList<String[]> parsedWordsInText = new ArrayList<String[]>();
 		String[] parsedSentences = text.split("[?.!]");
 		for (String s : parsedSentences){
+			s = s.replace(arg0, " ");
 			String[] words = s.split("\\s+");
 			parsedWordsInText.add(words);
 		}
@@ -27,37 +28,28 @@ public class TextProcessor {
 		return parsedWords;
 	}
 	
-	public void countWordsInText(String text){
+	public void countWordFrequency(String text){
 		wordCount = new TreeMap<String, Integer>(); 
+		wordAppearInSentence = new TreeMap<String, ArrayList<Integer>>();
 		ArrayList<String[]> wordsInTheText = parseText(text);
-		for (String[] sentence : wordsInTheText){
-			for (String w : sentence){
-				if (!(wordCount.containsKey(w))){
-					wordCount.put(w, 0);
+		for (int i = 0; i < wordsInTheText.size(); i++){
+			String[] wordsInASentence = wordsInTheText.get(i);
+			
+			for (String word : wordsInASentence){
+				ArrayList<Integer> wordInSentences = new ArrayList<Integer>();
+				if (!(wordCount.containsKey(word))){
+					wordCount.put(word, 0);
+					wordAppearInSentence.put(word, wordInSentences);
 				}
-				int count = wordCount.get(w);
-				wordCount.put(w, ++count);
+				int count = wordCount.get(word);
+				wordCount.put(word, ++count);
+				wordInSentences.add(i);
+				wordAppearInSentence.put(word, wordInSentences);
+				
 			}
 		}
 	}
 	
-	public void findWordInWhichSentence(String text){
-		wordApperanceInSentence = new TreeMap<String, ArrayList<Integer>>();
-		ArrayList<String[]> wordsInTheText = parseText(text);
-		for (int i = 0; i < wordsInTheText.size(); i++){
-			String[] wordsInASentence = wordsInTheText.get(i);
-			for (String word : wordsInASentence){
-				ArrayList<Integer> sentenceCount = new ArrayList<Integer>();
-				if (!wordApperanceInSentence.containsKey(word)) {
-					wordApperanceInSentence.put(word, sentenceCount);
-				}
-				sentenceCount.add(i);
-				wordApperanceInSentence.put(word, sentenceCount);
-			}
-		}
-		
-	}
-		
 	public String getText(){
 		return textToBeProcessed;
 	}
