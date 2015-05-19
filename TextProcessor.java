@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeMap;
 
 
@@ -7,6 +8,7 @@ public class TextProcessor {
 	private ArrayList<String[]> parsedWordsInText;
 	private TreeMap<String, Integer> wordCount;
 	private TreeMap<String, ArrayList<Integer>> wordApperanceInSentence;
+	private HashMap<String, String> replacementMap;
 	
 	
 	public TextProcessor(String input){
@@ -15,19 +17,57 @@ public class TextProcessor {
 	
 	/***/
 	public void parseTextIntoWords(){
-		parsedWordsInText = new ArrayList<String[]>();
+		String preProcessedText = preProcessSepcialCases(rawText);
 		
-		String[] parsedSentences = rawText.split("[?.!]");
+		String[] parsedSentences = splitIntoSentences(preProcessedText);
 		for (String s : parsedSentences){
-			s.replaceAll("[:;()[]\"/,\\]", " ");
-			String[] words = s.split("\\s+");
-			for (String w : words){
-			}
-			parsedWordsInText.add(words);
+			System.out.println(s);
 		}
+		splitSentenceIntoWords(parsedSentences);
 	}
-			
-	/**This method traverses the parsed text list and updates the word counts and word position
+	
+	private String[] splitIntoSentences(String text) {
+		String sentenceEnder = "[!?.]";
+		String[] parsedSentences = text.split(sentenceEnder);
+		for (int i = 0; i< parsedSentences.length; i++){
+			parsedSentences[i] = parsedSentences[i].replaceAll("@#@#", ".");
+			System.out.println("not working");
+		}
+		return parsedSentences;
+	}
+	
+	private void splitSentenceIntoWords(String[] sentences) {
+		parsedWordsInText = new ArrayList<String[]>();
+		String midSentencePuctuation = "[:;()\\[\\]\"/,]";
+		for (String s : sentences){
+			s.replaceAll(midSentencePuctuation, " ");
+			String[] words = s.trim().split("\\s+");
+			parsedWordsInText.add(words);
+		}// TODO Auto-generated method stub
+		
+	}
+	
+	public String preProcessSepcialCases(String text) {
+		//System.out.println("text");
+		collectSpecialCases();
+		for(String s : replacementMap.keySet()){
+			text = text.replaceAll(s, replacementMap.get(s));
+		}
+		String processedText = text;
+		
+		return processedText;
+	}
+	
+	public void collectSpecialCases(){
+		replacementMap = new HashMap<String, String>();
+		String number = "(\\d+)(\\.)(\\d+)"; // for numbers like 44.56
+		String abbreviationWithTwoDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)";
+		replacementMap.put(number, "$1@#@#$3");
+		replacementMap.put(abbreviationWithTwoDots, "$1@#@#$3@#@#");
+				
+	}
+	
+    /**This method traverses the parsed text list and updates the word counts and word position
 	 * @throws textNotParsedException */
 	public void countWordFrequencyAndPositions() throws textNotParsedException{
 		wordCount = new TreeMap<String, Integer>(); 
