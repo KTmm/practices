@@ -27,11 +27,12 @@ public class TextProcessor {
 	}
 			
 	
-	
-	public void countWordFrequencyAndPositions(String text){
+	/**This method traverses the parsed text list and updates the word counts and word position
+	 * @throws textNotParsedException */
+	public void countWordFrequencyAndPositions() throws textNotParsedException{
 		wordCount = new TreeMap<String, Integer>(); 
 		wordApperanceInSentence = new TreeMap<String, ArrayList<Integer>>();
-		
+		validateTextIsParsed();
 		for (int i = 0; i < parsedWordsInText.size(); i++){
 			String[] wordsInASentence = parsedWordsInText.get(i);
 			for (String word : wordsInASentence){
@@ -65,7 +66,12 @@ public class TextProcessor {
 		}
 		
 	}
-		
+	public void validateTextIsParsed() throws textNotParsedException{
+		if (parsedWordsInText == null){
+			throw new textNotParsedException("Raw input has not been parsed into words yet!");
+		}
+	}
+	
 	public String getText(){
 		return rawText;
 	}
