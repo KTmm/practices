@@ -20,7 +20,6 @@ public class TextProcessor {
 		String preProcessedText = preProcessSepcialCases(rawText);
 		String[] parsedSentences = splitIntoSentences(preProcessedText);
 		for (String s : parsedSentences){
-			System.out.println(s);
 		}
 		splitSentenceIntoWords(parsedSentences);
 	}
@@ -30,24 +29,22 @@ public class TextProcessor {
 		String[] parsedSentences = text.split(sentenceEnder);
 		for (int i = 0; i< parsedSentences.length; i++){
 			parsedSentences[i] = parsedSentences[i].replaceAll("@#@#", ".");
-			System.out.println("parsed sentences = " + parsedSentences[i]);
 		}
 		return parsedSentences;
 	}
 	
 	private void splitSentenceIntoWords(String[] sentences) {
 		parsedWordsInText = new ArrayList<String[]>();
-		String midSentencePuctuation = "[:;()\\[\\]\"/,]";
+		String midSentencePuctuation = "[,:;()\\[\\]\"/]";
 		for (String s : sentences){
-			s.replaceAll(midSentencePuctuation, " ");
-			String[] words = s.trim().split("\\s+");
+			s = s.replaceAll(midSentencePuctuation, " ");
+			String[] words = s.trim().toLowerCase().split("\\s+");
 			parsedWordsInText.add(words);
 		}// TODO Auto-generated method stub
 		
 	}
 	
 	public String preProcessSepcialCases(String text) {
-		System.out.println("rawtext = " + text);
 		collectSpecialCases();
 		for(String s : replacementMap.keySet()){
 			text = text.replaceAll(s, replacementMap.get(s));
@@ -63,11 +60,12 @@ public class TextProcessor {
 		replacementMap = new HashMap<String, String>();
 		String number = "(\\d+)(\\.)(\\d+)"; // for numbers like 44.56
 		String abbreviationWithTwoDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)";// for abbreviation like i.e. 
+		String titles = "(\\s?Mr|Ms|Mrs|Dr|Jr|Sr)(\\.)"; // Mr. Ms. Mrs. Dr. Jr. Sr.
 		//String abbreviationWithThreeDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)([a-zA-Z]?)(\\.?)";
 		//replacementMap.put(abbreviationWithThreeDots, "$1@#@#$3@#@#$5@#@#");
 		replacementMap.put(number, "$1@#@#$3");
 		replacementMap.put(abbreviationWithTwoDots, "$1@#@#$3@#@#"); 
-		
+		replacementMap.put(titles, "$1@#@#");
 		
 	}
 	
@@ -131,4 +129,45 @@ public class TextProcessor {
 		return wordApperanceInSentence.get(word);
 	}
 	
+    public void generateConcordance() throws textNotParsedException{
+    	parseTextIntoWords();
+    	countWordFrequencyAndPositions();
+    	System.out.println(generateConcordanceString());
+    	
+    }
+
+	public String generateConcordanceString() {
+		String concordance = "";
+		int secondColumnStartPoint = 20;
+		for (String word : wordCount.keySet()){
+			concordance += word;
+			concordance += " ";
+			//concordance += generateNSpaces(secondColumnStartPoint - word.length());
+			concordance += "{";
+			concordance += wordCount.get(word);
+			concordance += ":";
+			concordance += makeArrayListToString(wordApperanceInSentence.get(word));
+			concordance += "}\n";
+		}
+		//System.out.println(concordance);
+		return concordance;
+	}
+
+	private String generateNSpaces(int n) {
+		String spaceString = "";
+		for (int i = 0; i < n; i++){
+			spaceString += " ";
+		}
+		return spaceString;
+	}
+	
+	public String makeArrayListToString(ArrayList<Integer> list){
+		String numbers = "";
+		for(int i = 0; i < list.size() - 1; i++){
+			numbers += list.get(i);
+			numbers += ",";
+		}
+		numbers += list.get(list.size() - 1);
+		return numbers;
+	}
 }
