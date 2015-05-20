@@ -83,10 +83,8 @@ public class TextProcessor {
 					wordCount.put(word, 0);
 					wordApperanceInSentence.put(word, wordPositions);
 				}
-				
 				int count = wordCount.get(word);
 				wordCount.put(word, ++count);
-				System.out.println(word + " count = "+ count);
 				wordPositions = wordApperanceInSentence.get(word);
 				wordPositions.add(i + 1);
 				wordApperanceInSentence.put(word, wordPositions);
@@ -129,14 +127,14 @@ public class TextProcessor {
 		return wordApperanceInSentence.get(word);
 	}
 	
-    public void generateConcordance() throws textNotParsedException{
-    	parseTextIntoWords();
-    	countWordFrequencyAndPositions();
+    public void generateConcordance() throws textNotParsedException {
     	System.out.println(generateConcordanceString());
     	
     }
 
-	public String generateConcordanceString() {
+	protected String generateConcordanceString() throws textNotParsedException {
+		parseTextIntoWords();
+    	countWordFrequencyAndPositions();
 		String concordance = "";
 		int secondColumnStartPoint = 20;
 		for (String word : wordCount.keySet()){
@@ -149,7 +147,6 @@ public class TextProcessor {
 			concordance += makeArrayListToString(wordApperanceInSentence.get(word));
 			concordance += "}\n";
 		}
-		//System.out.println(concordance);
 		return concordance;
 	}
 

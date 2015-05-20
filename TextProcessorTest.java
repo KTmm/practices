@@ -83,8 +83,6 @@ public class TextProcessorTest {
 		TextProcessor tp7 = new TextProcessor("Given an arbitrary text document written in English, write a program that will"
 				+ " generate a concordance, i.e. an alphabetical list of all word occurrences, "
 				+ "labeled with word frequencies. Bonus: label each word with the sentence numbers in which each occurrence appeared.");
-		tp7.parseTextIntoWords();
-		tp7.countWordFrequencyAndPositions();
 		String producedConcordance = tp7.generateConcordanceString();
 		String expectedConcordance = "a {2:1,1}\nall {1:1}\nalphabetical {1:1}\nan {2:1,1}\nappeared {1:2}\narbitrary {1:1}\nbonus {1:2}"
 				+ "\nconcordance {1:1}\ndocument {1:1}\neach {2:2,2}\nenglish {1:1}\nfrequencies {1:1}\ngenerate {1:1}\ngiven {1:1}"
