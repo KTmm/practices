@@ -18,7 +18,6 @@ public class TextProcessor {
 	/***/
 	public void parseTextIntoWords(){
 		String preProcessedText = preProcessSepcialCases(rawText);
-		
 		String[] parsedSentences = splitIntoSentences(preProcessedText);
 		for (String s : parsedSentences){
 			System.out.println(s);
@@ -31,7 +30,7 @@ public class TextProcessor {
 		String[] parsedSentences = text.split(sentenceEnder);
 		for (int i = 0; i< parsedSentences.length; i++){
 			parsedSentences[i] = parsedSentences[i].replaceAll("@#@#", ".");
-			System.out.println("not working");
+			System.out.println("parsed sentences = " + parsedSentences[i]);
 		}
 		return parsedSentences;
 	}
@@ -48,23 +47,28 @@ public class TextProcessor {
 	}
 	
 	public String preProcessSepcialCases(String text) {
-		//System.out.println("text");
+		System.out.println("rawtext = " + text);
 		collectSpecialCases();
 		for(String s : replacementMap.keySet()){
 			text = text.replaceAll(s, replacementMap.get(s));
 		}
+		String USA = "U.S.A. aaa";
+		USA = USA.replaceAll("(\\s?[a-zA-Z])(\\.)([a-zA-Z])(\\.)([a-zA-Z])(\\.)", "$1@#@#$3@#@#$5@#@#");
 		String processedText = text;
-		
 		return processedText;
 	}
 	
+	/**This word updates sepcial case replace map*/
 	public void collectSpecialCases(){
 		replacementMap = new HashMap<String, String>();
 		String number = "(\\d+)(\\.)(\\d+)"; // for numbers like 44.56
-		String abbreviationWithTwoDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)";
+		String abbreviationWithTwoDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)";// for abbreviation like i.e. 
+		//String abbreviationWithThreeDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)([a-zA-Z]?)(\\.?)";
+		//replacementMap.put(abbreviationWithThreeDots, "$1@#@#$3@#@#$5@#@#");
 		replacementMap.put(number, "$1@#@#$3");
-		replacementMap.put(abbreviationWithTwoDots, "$1@#@#$3@#@#");
-				
+		replacementMap.put(abbreviationWithTwoDots, "$1@#@#$3@#@#"); 
+		
+		
 	}
 	
     /**This method traverses the parsed text list and updates the word counts and word position
