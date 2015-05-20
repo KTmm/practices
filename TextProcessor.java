@@ -28,7 +28,7 @@ public class TextProcessor {
 		String sentenceEnder = "[!?.]";
 		String[] parsedSentences = text.split(sentenceEnder);
 		for (int i = 0; i< parsedSentences.length; i++){
-			parsedSentences[i] = parsedSentences[i].replaceAll("@#@#", ".");
+			parsedSentences[i] = parsedSentences[i].replaceAll("(@#@#)+", ".");
 		}
 		return parsedSentences;
 	}
@@ -49,8 +49,6 @@ public class TextProcessor {
 		for(String s : replacementMap.keySet()){
 			text = text.replaceAll(s, replacementMap.get(s));
 		}
-		String USA = "U.S.A. aaa";
-		USA = USA.replaceAll("(\\s?[a-zA-Z])(\\.)([a-zA-Z])(\\.)([a-zA-Z])(\\.)", "$1@#@#$3@#@#$5@#@#");
 		String processedText = text;
 		return processedText;
 	}
@@ -59,12 +57,12 @@ public class TextProcessor {
 	public void collectSpecialCases(){
 		replacementMap = new HashMap<String, String>();
 		String number = "(\\d+)(\\.)(\\d+)"; // for numbers like 44.56
-		String abbreviationWithTwoDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)";// for abbreviation like i.e. 
+		//String abbreviationWithTwoDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)";// for abbreviation like i.e. 
 		String titles = "(\\s?Mr|Ms|Mrs|Dr|Jr|Sr)(\\.)"; // Mr. Ms. Mrs. Dr. Jr. Sr.
-		//String abbreviationWithThreeDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)([a-zA-Z]?)(\\.?)";
-		//replacementMap.put(abbreviationWithThreeDots, "$1@#@#$3@#@#$5@#@#");
+		String abbreviationWithThreeDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)([a-zA-Z]*)(\\.*)"; //cases like i.e. U.S.A. 
+		replacementMap.put(abbreviationWithThreeDots, "$1@#@#$3@#@#$5@#@#");
 		replacementMap.put(number, "$1@#@#$3");
-		replacementMap.put(abbreviationWithTwoDots, "$1@#@#$3@#@#"); 
+		//replacementMap.put(abbreviationWithTwoDots, "$1@#@#$3@#@#"); 
 		replacementMap.put(titles, "$1@#@#");
 		
 	}

@@ -9,7 +9,7 @@ public class TextProcessorTest {
 	
 	@Test
 	public void isCorrect_forTextParser() throws textNotParsedException {
-		TextProcessor tp1 = new TextProcessor(" Mr. Ms. Jr. Sr. Given an arbitrary text document written in English, write a program that will"
+		TextProcessor tp1 = new TextProcessor(" Mr. Ms. U.S.A. Sr. Given an arbitrary text document written in English, write a program that will"
 				+ " generate a concordance, i.e. an alphabetical list of all word occurrences! "
 				+ "labeled with word frequencies. Bonus: label 88.56 word with the sentence numbers in which each occurrence appeared.");
 		tp1.parseTextIntoWords();
@@ -18,6 +18,7 @@ public class TextProcessorTest {
 		assertEquals("ms.", tp1.getParsedText().get(0)[1]);
 		assertEquals("i.e.", tp1.getParsedText().get(0)[20]);
 		assertEquals("88.56", tp1.getParsedText().get(2)[2]);
+		assertEquals("u.s.a.", tp1.getParsedText().get(0)[2]);
 	}
 
 	@Test(expected = textNotParsedException.class)
@@ -91,5 +92,4 @@ public class TextProcessorTest {
 				+ "\nwill {1:1}\nwith {2:1,2}\nword {3:1,1,2}\nwrite {1:1}\nwritten {1:1}\n";
 		assertEquals(expectedConcordance, producedConcordance);
 	}
-	
 }
