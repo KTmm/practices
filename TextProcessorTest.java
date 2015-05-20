@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -9,7 +10,7 @@ public class TextProcessorTest {
 	
 	@Test
 	public void isCorrect_forTextParser() throws textNotParsedException {
-		TextProcessor tp1 = new TextProcessor(" Mr. Ms. U.S.A. Sr. Given an arbitrary text document written in English, write a program that will"
+		TextProcessor tp1 = new TextProcessor(" Mr. Ms. U.S.A. Ph.D. Given an arbitrary text document written in English, write a program that will"
 				+ " generate a concordance, i.e. an alphabetical list of all word occurrences! "
 				+ "labeled with word frequencies. Bonus: label 88.56 word with the sentence numbers in which each occurrence appeared.");
 		tp1.parseTextIntoWords();
@@ -80,16 +81,45 @@ public class TextProcessorTest {
 	}
 	
 	@Test
-	public void isCorrect_forGenerateConcordance() throws textNotParsedException{
+	public void isCorrect_forGenerateConcordance() throws textNotParsedException, IOException{
 		TextProcessor tp7 = new TextProcessor("Given an arbitrary text document written in English, write a program that will"
 				+ " generate a concordance, i.e. an alphabetical list of all word occurrences, "
 				+ "labeled with word frequencies. Bonus: label each word with the sentence numbers in which each occurrence appeared.");
 		String producedConcordance = tp7.generateConcordanceString();
-		String expectedConcordance = "a {2:1,1}\nall {1:1}\nalphabetical {1:1}\nan {2:1,1}\nappeared {1:2}\narbitrary {1:1}\nbonus {1:2}"
-				+ "\nconcordance {1:1}\ndocument {1:1}\neach {2:2,2}\nenglish {1:1}\nfrequencies {1:1}\ngenerate {1:1}\ngiven {1:1}"
-				+ "\ni.e. {1:1}\nin {2:1,2}\nlabel {1:2}\nlabeled {1:1}\nlist {1:1}\nnumbers {1:2}\noccurrence {1:2}"
-				+ "\noccurrences {1:1}\nof {1:1}\nprogram {1:1}\nsentence {1:2}\ntext {1:1}\nthat {1:1}\nthe {1:2}\nwhich {1:2}"
-				+ "\nwill {1:1}\nwith {2:1,2}\nword {3:1,1,2}\nwrite {1:1}\nwritten {1:1}\n";
+		String expectedConcordance = "a              {2:1,1}\n"
+				+ "all            {1:1}\n"
+				+ "alphabetical   {1:1}\n"
+				+ "an             {2:1,1}\n"
+				+ "appeared       {1:2}\n"
+				+ "arbitrary      {1:1}\n"
+				+ "bonus          {1:2}\n"
+				+ "concordance    {1:1}\n"
+				+ "document       {1:1}\n"
+				+ "each           {2:2,2}\n"
+				+ "english        {1:1}\n"
+				+ "frequencies    {1:1}\n"
+				+ "generate       {1:1}\n"
+				+ "given          {1:1}\n"
+				+ "i.e.           {1:1}\n"
+				+ "in             {2:1,2}\n"
+				+ "label          {1:2}\n"
+				+ "labeled        {1:1}\n"
+				+ "list           {1:1}\n"
+				+ "numbers        {1:2}\n"
+				+ "occurrence     {1:2}\n"
+				+ "occurrences    {1:1}\n"
+				+ "of             {1:1}\n"
+				+ "program        {1:1}\n"
+				+ "sentence       {1:2}\n"
+				+ "text           {1:1}\n"
+				+ "that           {1:1}\n"
+				+ "the            {1:2}\n"
+				+ "which          {1:2}\n"
+				+ "will           {1:1}\n"
+				+ "with           {2:1,2}\n"
+				+ "word           {3:1,1,2}\n"
+				+ "write          {1:1}\n"
+				+ "written        {1:1}\n";
 		assertEquals(expectedConcordance, producedConcordance);
 	}
 }

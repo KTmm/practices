@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -15,15 +17,17 @@ public class TextProcessor {
 		rawText = input;
 	}
 	
-	/***/
+	/**@return an arraylist of string arrays, each array contains words tokenized from a sentence*/
 	public void parseTextIntoWords(){
 		String preProcessedText = preProcessSepcialCases(rawText);
 		String[] parsedSentences = splitIntoSentences(preProcessedText);
-		for (String s : parsedSentences){
-		}
 		splitSentenceIntoWords(parsedSentences);
+		
 	}
 	
+	/**A sentence: a string fragment separated by ".", "!" or "?", abbreviations such as "i.e." or "U.S.A." or 
+	 *  numbers like 44.56 are exempted from parsing
+	 *  @return a string array, each element is a sentence based on the rule of sentence splitting*/
 	private String[] splitIntoSentences(String text) {
 		String sentenceEnder = "[!?.]";
 		String[] parsedSentences = text.split(sentenceEnder);
@@ -33,6 +37,8 @@ public class TextProcessor {
 		return parsedSentences;
 	}
 	
+	/**A word is a string fragment separated by one or more spaces
+	 * @return an ArrayList of strings, each string is a word*/
 	private void splitSentenceIntoWords(String[] sentences) {
 		parsedWordsInText = new ArrayList<String[]>();
 		String midSentencePuctuation = "[,:;()\\[\\]\"/]";
@@ -40,10 +46,11 @@ public class TextProcessor {
 			s = s.replaceAll(midSentencePuctuation, " ");
 			String[] words = s.trim().toLowerCase().split("\\s+");
 			parsedWordsInText.add(words);
-		}// TODO Auto-generated method stub
-		
+		}
 	}
 	
+	/**pre-process the raw text for the special cases, to replace the periods in abbreviations with some special symbols
+	 * @return preprocessed text*/
 	public String preProcessSepcialCases(String text) {
 		collectSpecialCases();
 		for(String s : replacementMap.keySet()){
@@ -53,18 +60,15 @@ public class TextProcessor {
 		return processedText;
 	}
 	
-	/**This word updates sepcial case replace map*/
+	/**This word updates special case map*/
 	public void collectSpecialCases(){
 		replacementMap = new HashMap<String, String>();
 		String number = "(\\d+)(\\.)(\\d+)"; // for numbers like 44.56
-		//String abbreviationWithTwoDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)";// for abbreviation like i.e. 
 		String titles = "(\\s?Mr|Ms|Mrs|Dr|Jr|Sr)(\\.)"; // Mr. Ms. Mrs. Dr. Jr. Sr.
-		String abbreviationWithThreeDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)([a-zA-Z]*)(\\.*)"; //cases like i.e. U.S.A. 
+		String abbreviationWithThreeDots = "(\\s?[a-zA-Z]{1,2})(\\.)([a-zA-Z])(\\.)([a-zA-Z]*)(\\.*)"; //cases like i.e. or U.S.A. 
 		replacementMap.put(abbreviationWithThreeDots, "$1@#@#$3@#@#$5@#@#");
 		replacementMap.put(number, "$1@#@#$3");
-		//replacementMap.put(abbreviationWithTwoDots, "$1@#@#$3@#@#"); 
 		replacementMap.put(titles, "$1@#@#");
-		
 	}
 	
     /**This method traverses the parsed text list and updates the word counts and word position
@@ -125,20 +129,24 @@ public class TextProcessor {
 		return wordApperanceInSentence.get(word);
 	}
 	
-    public void generateConcordance() throws textNotParsedException {
-    	System.out.println(generateConcordanceString());
-    	
+	/**This method generates a file of generated concordance
+	 * @see printout of concordance in console*/
+    public void generateConcordanceFile(String filename) throws textNotParsedException, IOException {
+    	String concordance = generateConcordanceString();
+    	System.out.println(concordance);
+    	FileWriter writer = new FileWriter(filename);
+    	writer.write(concordance);
+		writer.close();
     }
 
-	protected String generateConcordanceString() throws textNotParsedException {
+	protected String generateConcordanceString() throws textNotParsedException, IOException {
 		parseTextIntoWords();
     	countWordFrequencyAndPositions();
 		String concordance = "";
-		int secondColumnStartPoint = 20;
+		int secondColumnStartPoint = 15;
 		for (String word : wordCount.keySet()){
 			concordance += word;
-			concordance += " ";
-			//concordance += generateNSpaces(secondColumnStartPoint - word.length());
+			concordance += generateNSpaces(secondColumnStartPoint - word.length());
 			concordance += "{";
 			concordance += wordCount.get(word);
 			concordance += ":";
